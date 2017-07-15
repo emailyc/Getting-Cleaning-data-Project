@@ -14,7 +14,8 @@ if(!file.exists("UCI HAR Dataset")) { #Check wether the folder containing the da
         }
 
 #load dplyr
-library(dplyr) 
+library(dplyr)
+library(tidyr)
 
 #function to make a combines data frame
 make.p = function(){
@@ -71,7 +72,8 @@ for (i in 3:68) {
 #Create average of each variable for each subject/activity group.
 #Gather features into a single column
 #Export the tidy data frame into .txt file
-p %>%  group_by(Subject.Number, Activity) %>% summarise_all(mean) %>% gather(Features, 'Averages of variable', -Subject.Number, -Activity) %>% write.table(.,paste0(getwd(), '/tidy.txt'))
+p %>%  group_by(Subject.Number, Activity) %>% summarise_all(mean) %>% 
+        gather(Features, 'Averages of variable', -Subject.Number, -Activity) %>% write.table(.,paste0(getwd(), '/tidy.txt'), row.name=FALSE)
 View(read.table("tidy.txt", header = T))
 
 #Delete the downloaded files.
