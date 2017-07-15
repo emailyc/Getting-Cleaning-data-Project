@@ -72,8 +72,10 @@ for (i in 3:68) {
 #Create average of each variable for each subject/activity group.
 #Gather features into a single column
 #Export the tidy data frame into .txt file
-p %>%  group_by(Subject.Number, Activity) %>% summarise_all(mean) %>% 
-        gather(Features, 'Averages of variable', -Subject.Number, -Activity) %>% write.table(.,paste0(getwd(), '/tidy.txt'), row.name=FALSE)
+#p %>%  group_by(Subject.Number, Activity) %>% summarise_all(mean) %>% 
+p %>% aggregate(. ~ Subject.Number + Activity, ., mean) %>%
+        gather(Features, 'Averages of variable', -Subject.Number, -Activity) %>% 
+        write.table(.,paste0(getwd(), '/tidy.txt'), row.name=FALSE)
 View(read.table("tidy.txt", header = T))
 
 #Delete the downloaded files.
